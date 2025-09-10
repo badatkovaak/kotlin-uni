@@ -30,30 +30,53 @@ fun solve_rec(tower: Tower,n: Int, origin: Int, dest: Int) {
 
 data class myInteger(var v: Int)
 
-// fun max1(vararg x: Int): myInteger{
-//     val curr_max: myInteger = myInteger(-10000000)
+fun max1(vararg x: Int): myInteger{
+    val curr_max: myInteger = myInteger(-10000000)
     
-//     fun max_inner(arr: IntArray, i: Int, curr_max: myInteger): myInteger {
-//         if (i >= arr.size)
-//         	return curr_max
+    fun max_inner(arr: IntArray, i: Int, curr_max: myInteger): myInteger {
+        if (i >= arr.size)
+        	return curr_max
         
-//         if (curr_max.v < arr[i])
-//         	curr_max.v = arr[i]
+        if (curr_max.v < arr[i])
+        	curr_max.v = arr[i]
         
-//         return max_inner(arr, i+1, curr_max)
-//     }
+        return max_inner(arr, i+1, curr_max)
+    }
     
-//     return max_inner(x, 0, curr_max)
-// }
+    return max_inner(x, 0, curr_max)
+}
 
-fun max(vararg x: Int) = x.fold(-100000000){l: Int, r:Int -> if (r > l) r else l}
+fun max(vararg xs: Int) = xs.fold(-100000000){l: Int, r:Int -> if (r > l) r else l}
 
+fun gcd(vararg xs: Int) = xs.fold(xs[0]){l: Int, r: Int -> gcd(l, r)}
+
+fun gcd(x: Int, y: Int): Int = if (y == 0) x else gcd(y, x % y) 
+
+fun gcd1(x: Int, y: Int): Int {
+    var a = x
+    var b = y
+    var temp: Int
+    
+    while(b != 0) {
+        a = a % b
+    	temp = b
+        b = a
+        a = temp
+    }
+    
+    return a
+}
+
+fun intersection(xs: List<Int>, ys: List<Int>): List<Int> {
+    
+}
 
 fun main() {
 // 	println(max(1,2,3,5,7,4))
-    val tower: Tower = listOf(mutableListOf(4,3,2,1), mutableListOf(), mutableListOf())
-    print_tower(tower)
-    solve_rec(tower, 4, 0, 1)
-    println()
-    print_tower(tower)
+//     val tower: Tower = listOf(mutableListOf(4,3,2,1), mutableListOf(), mutableListOf())
+//     print_tower(tower)
+//     solve_rec(tower, 4, 0, 1)
+//     println()
+//     print_tower(tower)
+    println(gcd(36, 44, 72, 32, 7))
 }
