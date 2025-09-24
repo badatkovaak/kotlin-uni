@@ -1,4 +1,3 @@
-
 typealias Tower = List<MutableList<Int>>
     
 fun print_tower(tower: Tower) {
@@ -67,8 +66,39 @@ fun gcd1(x: Int, y: Int): Int {
     return a
 }
 
-fun intersection(xs: List<Int>, ys: List<Int>): List<Int> {
+// fun intersection(xs: List<Int>, ys: List<Int>): List<Int> {
     
+// }
+
+open class Human(name: String, age: Int = 0){}
+
+class Student(val name: String, val age: Int = 18, val grades: List<Int>) : Human(name, age) {
+    
+    fun compute_stipend():Int{
+        val min_grade = this.grades.fold(this.grades[0]){l: Int, r: Int -> if (l >= r) r else l}
+        return when (min_grade){
+        	5 -> 5000
+        	4 -> 2500
+        	else -> 0
+    	}
+    }
+}
+
+abstract class Animal() {
+    abstract fun Voice()
+    abstract val name: String
+}
+
+class Dog(override val name: String): Animal() {
+    override fun Voice() {
+        println("Woof")
+    }
+}
+
+class Cat(override val name: String): Animal() {
+    override fun Voice() {
+        println("Meow")
+    }
 }
 
 fun main() {
@@ -78,5 +108,8 @@ fun main() {
 //     solve_rec(tower, 4, 0, 1)
 //     println()
 //     print_tower(tower)
-    println(gcd(36, 44, 72, 32, 7))
+//     println(gcd(36, 44, 72, 32, 7))
+//     val s = Student("hi", 10, listOf(5,4,5))
+//     println(s.compute_stipend())
+    
 }
