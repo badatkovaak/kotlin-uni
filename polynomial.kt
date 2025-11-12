@@ -75,14 +75,14 @@ class Polynomial(val coeffs: List<Double>) {
 
 typealias P = Polynomial
 
-class NewtonPoly(val points: List<Double>, val f: (Double) -> Double ) {
+class NewtonData(val points: List<Double>, val f: (Double) -> Double ) {
 
     fun createBasis(j: Int) = 
         points.withIndex()
     	    .fold(P(listOf(1.0)))
 		    {l, r -> if (r.index == j) l else l*P(listOf(-r.value, 1.0))*(1/(this.points[j] - r.value))}
 
-    fun createNewton() = points.withIndex().fold(P()){l, r -> l + createBasis(r.index) * this.f(r.value)}
+    fun createNewtonPoly() = points.withIndex().fold(P()){l, r -> l + createBasis(r.index) * this.f(r.value)}
     
 }
 
@@ -90,18 +90,18 @@ interface Nodes {
     fun getNodes(a: Double, b: Double, n: Int): List<Double>
 }
 
-class EquidsitantNodes: Nodes {
+class EquidistantNodes: Nodes {
     override fun getNodes(a: Double, b: Double, n: Int) = 
-        if (n <= 2 || b - a <= 0) throw Exception() else  1.rangeTo(n).map{a + (b-a)*it/n}
+        if (n <= 2 || b - a <= 0) throw Exception() else  0.rangeTo(n - 1).map{a + ((b-a)*it).toDouble()/(n - 1)}
 }
 
 class ChebyshevNodes: Nodes {
     override fun getNodes(a: Double, b: Double, n: Int) = 
-        if (n <= 2 || b - a <= 0) throw Exception() else  1.rangeTo(n).map{(a+b)/2+(b-a)/2*cos((2*(it.toDouble())+1)/(2*n))}
+        if (n <= 2 || b - a <= 0) throw Exception() else  0.rangeTo(n - 1).map{(a + b)/2 + (b - a) * cos(((2.0*(it.toDouble())+1.0)*PI/(2.0*n.toDouble()))) / 2}
 }
 
 class RandomNodes: Nodes {
-    override fun getNodes(a: Double, b: Double, n: Int) = Random(1).run{1.rangeTo(n).map{this.nextDouble(a,b)}}
+    override fun getNodes(a: Double, b: Double, n: Int) = Random.Default.run{1.rangeTo(n).map{this.nextDouble(a,b)}}
 }
 
 fun main() {
@@ -111,9 +111,9 @@ fun main() {
     val l1 = listOf(2.0, 0.0, 1.0, 0.0)
     val l2 = listOf(Pair(1.0, 1.0), Pair(2.0, 4.0), Pair(3.0, 9.0))
     
-    val data = NewtonPoly(ChebyshevNodes.getNodes(1, 4, 10) , {it*it})
+    val data = NewtonData(EquidistantNodes().getNodes(1.0, 4.0, 4) , {it*it})
     
-//    println(p1)
+//     println(p1)
 //     println(p2)
 //     println(p1 + p2)
 //     println(p1 * 3.0)
@@ -125,6 +125,9 @@ fun main() {
 //     println(createBasis(l2, 2))
 //     println(createLagrange(l2))
 //     println(l1.withIndex().map({println(it); 1.0}))
-	println(p1.diff())
-	println(data.createNewton())
+// 	println(p1.diff())
+	println(data.createNewtonPoly())
+    println(ChebyshevNodes().getNodes(2.0, 4.0, 6))
+    println(EquidistantNodes().getNodes(-1.0, 1.0, 6))
+    println(RandomNodes().getNodes(-1.0, 1.0, 4))
 }
