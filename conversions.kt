@@ -1,3 +1,6 @@
+package org.example.project
+
+import androidx.compose.ui.geometry.Offset
 import kotlin.math.abs
 
 data class ConversionData(
@@ -8,6 +11,14 @@ data class ConversionData(
 {
     constructor(): this(-5f, 5f, -5f, 5f ) {
     }
+
+//    fun updateOnScroll(p: Point, wheel: Float)
+
+//    fun center() = Point(this.xMin + (this.xMax - this.xMin)/2, this.yMin + (this.yMax - this.yMin)/2)
+//
+//    fun zoom(change: Float): ConversionData {
+//        return center()
+//    }
 }
 
 data class Point(val x: Float, val y: Float)
@@ -20,7 +31,7 @@ class Conversions {
             return Offset(x1, y1)
         }
 
-        fun offsetToCartesian(data: ConversionData, o: Offset, width: Float, height: Float) : Point {
+        fun offsetToCart(data: ConversionData, o: Offset, width: Float, height: Float) : Point {
             val x1 = data.xMin + (data.xMax - data.xMin) * o.x / width
             val y1 = data.yMax - (data.yMax - data.yMin) * o.y / height
             return Point(x1, y1)
